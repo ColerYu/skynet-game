@@ -1,0 +1,38 @@
+package lobby;
+
+message GameInfo {
+	required int32   gameId       = 1;  //游戏Id 1001 2001 3001
+	required int32   onlineNum    = 2;  //游戏人数
+}
+
+message GameListInfo {
+	repeated GameInfo gamelist    = 1;  //游戏列表
+}
+
+message RoomInfo {
+	required int32   gameId       = 1;  //游戏Id
+	required int32   roomId       = 2;  //游戏房间Id
+	required int32   onlineNum    = 3;  //在线人数
+}
+
+message RoomListInfo {
+	repeated RoomInfo roomlist    = 1;  //房间列表
+}
+
+message ApplyLoginGameReq {
+	required int32   gameId       = 1;
+	required int32   roomId       = 2;
+}
+
+message ApplyLoginGameReply {
+	required string  agent        = 1; //对应的agent地址,"by:agent1"
+}
+
+message QuickLoginGameReq {
+	required int32   gameId       = 1;
+}
+
+message QuickLoginGameReply {
+	required int32   roomId       = 1;
+	required string  agent        = 2; //对应的agent地址,"by:agent1"
+}

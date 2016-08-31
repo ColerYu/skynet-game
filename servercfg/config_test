@@ -1,0 +1,34 @@
+--[[
+  对外网关前置,所有前端通过这个连入游戏
+]]
+skynetroot      = "./skynet/"
+thread    = 4
+logger    = nil
+logpath   = "./log/"
+logfile   = "test.log"
+harbor    = 0
+start     = "main"
+bootstrap = "snlua bootstrap"
+
+debugPort   = 4013
+
+-- 集群名称配置文件
+--cluster = "./clustercfg/clustername.lua"
+--nodename = "center"
+
+gameservice = "./common/?.lua;" .. "./common/cluster/?.lua;" ..
+              "./test/?.lua;"
+
+luaservice = skynetroot .."service/?.lua;" .. gameservice
+lualoader  = skynetroot .. "lualib/loader.lua"
+preload    = "./global/preload.lua"   --run preload.lua before
+
+-- C编写的服务模块路径
+cpath      = skynetroot.."cservice/?.so"
+-- 将添加到 package.path 中的路径，供 require 调用。
+lua_path   = skynetroot.."lualib/?.lua;" .. "./global/?.lua;" .. "./common/?.lua;"
+-- 将添加到 package.cpath 中的路径，供 require 调用。
+lua_cpath  = skynetroot.."luaclib/?.so;"
+
+
+pbpath = "./pb/"

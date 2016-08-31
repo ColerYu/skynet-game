@@ -1,0 +1,1 @@
+print(os.date("%Y%m%d", os.time()))

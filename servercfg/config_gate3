@@ -1,0 +1,42 @@
+--[[
+  对外网关前置,所有前端通过这个连入游戏
+]]
+skynetroot      = "./skynet/"
+thread    = 4
+logger    = nil
+logpath   = "./log/"
+logfile   = "gate1.log"
+harbor    = 0 --0单点 1-master slave
+start     = "main"
+bootstrap = "snlua bootstrap"
+
+debugPort   = 6003
+
+-- 集群名称配置文件
+cluster = "./clustercfg/clustername.lua"
+nodename = "gate3"
+
+gameservice = "./common/?.lua;" .. "./gateserver/?.lua;"
+luaservice = skynetroot .."service/?.lua;" .. gameservice
+lualoader  = skynetroot .. "lualib/loader.lua"
+preload    = "./global/preload.lua"   --run preload.lua before
+
+-- C编写的服务模块路径
+cpath      = skynetroot.."cservice/?.so"
+-- 将添加到 package.path 中的路径，供 require 调用。
+lua_path   = skynetroot.."lualib/?.lua;" .. "./global/?.lua;" .. "./common/?.lua;"
+-- 将添加到 package.cpath 中的路径，供 require 调用。
+lua_cpath  = skynetroot.."luaclib/?.so;"
+
+
+--[[
+  外部网络的连接配置watchdog
+]]
+listenAddr  = "0.0.0.0"
+listenPort  = 4003
+maxClient   = 30000
+maxLogining = 50
+heartbeat   = 180   -- sec
+
+heartbeatInterval = 2
+

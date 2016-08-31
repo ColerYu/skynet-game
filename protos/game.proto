@@ -1,0 +1,51 @@
+package game;
+
+message Card {
+	required int32      type         = 1;
+	required int32      value        = 2;
+	optional int32      level        = 3;
+}
+
+message CardSeq {
+	repeated Card       cards        = 1;
+}
+
+message SeatCards {
+	required int32      seat         = 1;
+	repeated Card       cards        = 2;
+}
+
+message PlayerWinLost {
+	
+}
+
+message SeatWinLost {
+	required int32      seat         = 1;
+	required int64      roleId       = 2;
+	required int64      winlost      = 3;
+	required int64      scoreChange  = 4;
+}
+
+//-----------C2S----------------
+
+message LoginRoomRequest {
+	required int32      gameId       = 1;
+	required int32      roomId       = 2;
+}
+
+message LoginRoomReply {
+	
+}
+
+message ChangeDeskRequest {
+	
+}
+
+message ChangeDeskResponse {
+	
+}
+
+//-----------S2C-----------------
+message KickEvent {
+	
+}

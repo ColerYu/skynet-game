@@ -1,0 +1,21 @@
+package role;
+
+message RoleBase {
+	required int64      roleId      = 1;
+	required string     name        = 2;
+	required int64      headPic     = 3;
+}
+
+
+message RoleInfo {
+	required int64      roleId      = 1;
+	required string     name        = 2;
+	required int64      headPic     = 3;
+	required string     ip          = 4;
+	required int32      clientType  = 5;
+	required int32      sex         = 6;
+	required int32      score       = 7;
+	required int64      amount      = 8;
+}
+
+

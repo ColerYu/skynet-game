@@ -1,0 +1,83 @@
+--[[
+  对外网关前置,所有前端通过这个连入游戏
+]]
+skynetroot      = "./skynet/"
+thread    = 4
+logger    = nil
+logpath   = "./log/"
+logfile   = "by.log"
+harbor    = 0 --0单点 1-master slave
+start     = "bygame"
+bootstrap = "snlua bootstrap"
+
+debugPort   = 9002
+
+-- 集群名称配置文件
+cluster = "./clustercfg/clustername.lua"
+nodename = "by"
+
+--以下的是游戏相关的配置
+gamename = "by"
+gameid   = 1001
+
+gameservice = "./common/?.lua;" .. "./gameserver/?.lua;"
+luaservice = skynetroot .."service/?.lua;" .. gameservice
+lualoader  = skynetroot .. "lualib/loader.lua"
+preload    = "./global/preload.lua"   --run preload.lua before
+
+-- C编写的服务模块路径
+cpath      = skynetroot.."cservice/?.so"
+-- 将添加到 package.path 中的路径，供 require 调用。
+lua_path   = skynetroot.."lualib/?.lua;" .. "./global/?.lua;" .. gameservice
+-- 将添加到 package.cpath 中的路径，供 require 调用。
+lua_cpath  = skynetroot.."luaclib/?.so;"
+
+pbpath = "./pb/"
+
+--mysql_host = "192.168.14.128"
+mysql_host = "127.0.0.1"
+mysql_port = 3306
+mysql_db   = "game"
+mysql_user = "game"
+mysql_pwd  = "game"
+mysql_max_conn = 4
+
+redis_max_conn = 3
+
+redis_host0 = "127.0.0.1"
+redis_port0 = 6379
+redis_auth0 = nil
+
+redis_host1 = "127.0.0.1"
+redis_port1 = 6380
+redis_auth1 = nil
+
+
+redis_host2 = "127.0.0.1"
+redis_port2 = 6381
+redis_auth2 = nil
+
+redis_host3 = "127.0.0.1"
+redis_port3 = 6382
+redis_auth3 = nil
+
+redis_host4 = "127.0.0.1"
+redis_port4 = 6383
+redis_auth4 = nil
+
+redis_host5 = "127.0.0.1"
+redis_port5 = 6384
+redis_auth5 = nil
+
+redis_host6 = "127.0.0.1"
+redis_port6 = 6385
+redis_auth6 = nil
+
+redis_host7 = "127.0.0.1"
+redis_port7 = 6386
+redis_auth7 = nil
+
+redis_host8 = "127.0.0.1"
+redis_port8 = 6387
+redis_auth8 = nil
+

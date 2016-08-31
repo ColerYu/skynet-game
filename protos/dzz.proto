@@ -1,0 +1,176 @@
+import "role.proto";
+import "game.proto";
+package dzz;
+
+
+enum GameState {
+	ReadyBegin  = 0;
+	DealCards   = 1;
+	ReqBank     = 2;
+	Gameing     = 3; 
+	GameEnd     = 4;
+}
+
+enum SeatState {
+	SeatNull    = 0;
+	SeatUnReady = 1;
+	SeatReady   = 2;
+	SeatGameing = 3;
+	SeatOffLine = 4;
+	SeatExit    = 5;
+}
+
+message TableBase {
+	required GameState   state             = 1;
+	required int32       seat              = 2;
+	required int32       actionId          = 3;
+	required int32       beginTime         = 4;
+	required int32       nowTime           = 5;
+	required int32       lastModId         = 6;
+	required int64       dealId            = 7;
+}
+
+message SeatPlayer {
+	required int32       seat              = 1;
+	required role.RoleInfo player          = 2; 
+}
+
+message SeatStateInfo {
+	required int32       seat              = 1;
+	required SeatState   state             = 2;
+	required int32       deposit           = 3; //是否托管0-不托管 1托管
+}
+
+message SeatReqPoint {
+	required int32       seat              = 1;
+	required int32       point             = 2;
+}
+
+message Table {
+	required TableBase   base              = 1;
+	repeated SeatPlayer  players           = 2;
+	repeated SeatStateInfo seatStates      = 3;
+	required int32       beginReqSeat      = 4;
+	required int32       banker            = 5;
+	required game.CardSeq bottomCards      = 6;
+	repeated SeatReqPoint seatReqPoints    = 7;  //每个位置叫庄的分数
+	required int32       payoutMagn        = 8;
+	required int32       reqBankPoint      = 9;  //最终叫庄的分数 1分,2分,3分
+	required game.CardSeq myCards          = 10; //自已本局尚未出的牌
+	repeated game.SeatCards unShowCards    = 11; //每个坐位结束后未出的牌
+	repeated game.SeatCards recentlyCards  = 12; //每个座位最近一轮出的牌
+	required int32         endType         = 13; //结束原因 1正常结束 2有玩家强退
+	required int32         exitSeat        = 14; //强退的坐位号
+	repeated game.SeatWinLost winlosts     = 15; //玩家输羸
+}
+
+//---------------C2S--------------
+message AskBankRequest {
+	required int64       dealId            = 1; 
+	required int32       actionId          = 2; 
+	required int32       point             = 3;
+}
+
+message HandRequest
+{
+	required int64       dealId            = 1; 
+	required int32       actionId          = 2; 
+	required game.CardSeq cards            = 3;
+	required int32        type             = 4;
+	/*										斗地主牌型及牌值定义
+							牌型(Cards_Type)			牌值(Cards_Value)				牌数:
+		不适用				0							/								/
+		单牌:				1							Card.Value(面值)				1
+		一对:				2							Card.Value						2
+		三张:				3							Card.Value						3
+		三带一:				4							三张的Card.Value				4
+		四带二单:			5							四张的Card.Value				6
+		四带二对:			6							四张的Card.Value				8
+		单顺				7							最小单牌的Card.Value			5或以上
+		双顺				8							最小一对的Card.Value			6或以上，2的倍数
+		三顺				9							最小三张的Card.Value			6或以上，3的倍数
+		三顺带单牌			10							三顺的Card.Value				8或以上，4的倍数
+		三顺带对子			11							三顺的Card.Value				10或以上，5的倍数
+		四张:				12							CCard.Value						4
+		双王				13							小王的Card.Value				2
+	*/
+}
+
+message HandReply {
+	required TableBase   base              = 1;
+	required int32       magn              = 2;
+}
+
+message DepositRequest {
+	required int64       dealId            = 1; 
+	required int32       actionId          = 2; 
+	required int32       deposit           = 3; //0-表示不托管 1-表示托管
+}
+
+message DepositReply {
+	optional TableBase   base              = 1;
+}
+
+//-------------S2C----------------
+
+message SeatEvent {
+	required TableBase   base              = 1;
+	repeated SeatPlayer  players           = 2;
+	repeated SeatStateInfo seatStates      = 3;
+}
+
+message DealBeginEvent {
+	required TableBase   base              = 1;
+	required game.CardSeq cards            = 2;
+	repeated SeatPlayer  players           = 3;
+	required int32       beginDealSeat     = 4;
+	optional int32       beginSeat         = 5;
+	optional game.Card   visCard           = 6;
+	optional int32       visCardPos        = 7;
+
+}
+
+message BeginReqBanker {
+	required TableBase   base              = 1;
+	required int32       firstSeat         = 2;
+}
+
+message ReqBankerEvent {
+	required TableBase   base              = 1;
+	required int32       oldSeat           = 2;
+	required int32       point             = 3;
+	required int32       maxPoint          = 4;
+	required int32       maxpointSeat      = 5;
+}
+
+message BeginHandEvent {
+	required TableBase   base              = 1;
+	required int32       banker            = 2;
+	required int32       point             = 3;
+	required game.CardSeq bottomCards      = 4;
+}
+
+message PlayerHandEvent {
+	required TableBase   base              = 1;
+	required int32       firstTag          = 2;
+	required int32       oldSeat           = 3;
+	required int32       type              = 4;
+	required int32       num               = 5;
+	required int32       magn              = 6;
+	required game.CardSeq bottomCards      = 7;
+}
+
+message DealEndEvent {
+	required TableBase   base              = 1;
+	required int32       endType           = 2;
+	required int32       exitSeat          = 3;
+	required int32       bomb              = 4;
+	required int32       missile           = 5;
+	required int32       spring            = 6;
+	required int32       antiSpring        = 7;
+	repeated SeatStateInfo seatStates      = 8;
+	repeated game.SeatCards unShowCards    = 9; 
+	repeated SeatPlayer  players           = 10;
+	repeated game.SeatWinLost winlosts     = 11; //玩家输羸
+}
+

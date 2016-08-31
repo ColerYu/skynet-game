@@ -1,0 +1,71 @@
+package login;
+
+
+//登录基本信息
+message LoginBase {
+	required int32   clientType      = 1; // 1.pc 2.android 3.ios
+	required string ip              = 2; //客户端ip
+	required string hardwareNo      = 3; //设备唯一机器码
+	optional string version         = 4; //客户端版本号
+	optional string captchaToken    = 5; //验证码的token
+	optional string captchaValue    = 6; //验证码值
+	optional string hardwareBrand   = 7; //设备品牌
+	optional string hardwareMod     = 8; //设备的型号
+	optional string hardwareOs      = 9; //设备的操作系统
+}
+
+message UserBase {
+	required int64  roleId          = 1;  //角色id
+	required string nickname        = 2;  //呢称名
+	required int64  gold            = 3;  //玩家的金币
+}
+
+//游客登录
+message VisitorLoginReq {
+	required LoginBase base         = 1; //登录基本信息
+	required int32     token        = 2; //游客的token当作第三方帐号
+}
+
+message VisitorLoginReply {
+	required UserBase  base         = 1;
+}
+
+//玩家帐号登录
+message UserLoginReq {
+	required LoginBase base         = 1;
+	required string    username     = 2;
+	required string    password     = 3;
+}
+
+message UserLoginReply {
+	required UserBase  base         = 1;
+}
+
+//玩家第三方登录
+message ThirdLoginReq {
+	required LoginBase base         = 1;  //登录基本信息
+	required int32      thirdType    = 2;  //第三方类型
+	required string    accessToken  = 3;  //第三方获取到的token
+	required string    username     = 4;  //第三方获取的用户名
+}
+
+message ThirdLoginReply {
+	required UserBase  base         = 1;
+}
+
+
+//用户注册账号
+message RegAccountReq {
+	required string username        = 1;
+	required string passwordd       = 2;
+	required string sex             = 3;
+	required string head            = 4;
+	required string telphone        = 5;
+	required string mail            = 6;
+	required string qq              = 7;
+	required string birthday        = 8;
+}
+
+message RegAccountReply {
+	required UserBase  base         = 1;
+}
